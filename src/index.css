@@ -1,0 +1,99 @@
+@import 'tailwindcss';
+
+:root {
+  /* A single typeface throughout — `--font-heading` exists only so
+     existing `font-heading` utility classes and the h1-h3 base rule
+     below don't need touching everywhere; it's Inter too, not a second
+     typeface. */
+  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --color-background: #f7f7fb;
+  --color-card: #ffffff;
+  --color-border: #e5e6ef;
+  --color-foreground: #16181d;
+  --color-muted-foreground: #6b7280;
+
+  --color-primary: #5b4fe0;
+  --color-primary-hover: #4c40cf;
+  --color-primary-soft: #eef0fc;
+
+  /* The four chart/domain segment colours — kept constant across every
+     metric and every row, per the design system this prototype matches. */
+  --color-reach: #2bb0e6;
+  --color-engagement: #e3488f;
+  --color-impact: #5b4ae6;
+  --color-scientific: #f1a644;
+}
+
+@theme inline {
+  --font-heading: var(--font-heading);
+  --font-sans: var(--font-sans);
+  --color-background: var(--color-background);
+  --color-card: var(--color-card);
+  --color-border: var(--color-border);
+  --color-foreground: var(--color-foreground);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-soft: var(--color-primary-soft);
+  --color-reach: var(--color-reach);
+  --color-engagement: var(--color-engagement);
+  --color-impact: var(--color-impact);
+  --color-scientific: var(--color-scientific);
+}
+
+body {
+  /* Fixed attachment so the gradient reads as one continuous backdrop
+     behind the page's content rather than tiling/repeating once the
+     page scrolls past a single viewport height. The fade itself is
+     compressed into the first 10% of the diagonal — the lavender stop
+     ends there, not at 100%, so the rest of the page sits flat at the
+     near-white colour instead of drifting gradually the whole way. */
+  background: linear-gradient(135deg, #e9e7f9 0%, #f9f9ff 10%);
+  background-attachment: fixed;
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, [data-heading] {
+  font-family: var(--font-heading);
+}
+
+/* Browsers don't give <button> a pointer cursor the way they do <a> —
+   this is the one global rule that makes every button, tab, dropdown
+   trigger and option across the app behave like a clickable control
+   without adding `cursor-pointer` to each one by hand. Anything meant to
+   look non-interactive (headings, static cards, labels) is left alone,
+   since it's never one of these elements in the first place. */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+[role='tab'],
+[role='option'],
+a {
+  cursor: pointer;
+}
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+/* Rows revealed by "Show more" fade/slide in on mount instead of just
+   popping into place — the row's own height still appears instantly
+   (animating a table row's height is unreliable across browsers), but
+   this keeps the reveal from feeling like an abrupt snap. */
+@keyframes row-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.row-reveal {
+  animation: row-reveal 220ms ease-out;
+}
